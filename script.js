@@ -98,13 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const imageControlsArea = document.getElementById('image-controls-area');
     if (imageControlsArea) {
-        imageControlsArea.appendChild(grayscaleButton);
+        const controlsContainer = document.createElement('div');
+        controlsContainer.className = 'controls-grid';
+
+        controlsContainer.appendChild(grayscaleButton);
 
         // Create brightness slider
         const brightnessLabel = document.createElement('label');
         brightnessLabel.setAttribute('for', 'brightnessSlider');
         brightnessLabel.textContent = 'Brightness:';
-        imageControlsArea.appendChild(brightnessLabel);
+        controlsContainer.appendChild(brightnessLabel);
 
         const brightnessSlider = document.createElement('input');
         brightnessSlider.setAttribute('type', 'range');
@@ -115,13 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
         brightnessSlider.addEventListener('input', (event) => { // 'input' for real-time feedback
             adjustBrightness(event.target.value);
         });
-        imageControlsArea.appendChild(brightnessSlider);
+        controlsContainer.appendChild(brightnessSlider);
 
         // Create contrast slider
         const contrastLabel = document.createElement('label');
         contrastLabel.setAttribute('for', 'contrastSlider');
         contrastLabel.textContent = 'Contrast:';
-        imageControlsArea.appendChild(contrastLabel);
+        controlsContainer.appendChild(contrastLabel);
 
         const contrastSlider = document.createElement('input');
         contrastSlider.setAttribute('type', 'range');
@@ -132,43 +135,51 @@ document.addEventListener('DOMContentLoaded', () => {
         contrastSlider.addEventListener('input', (event) => {
             adjustContrast(event.target.value);
         });
-        imageControlsArea.appendChild(contrastSlider);
+        controlsContainer.appendChild(contrastSlider);
 
         // Create Sepia button
         const sepiaButton = document.createElement('button');
         sepiaButton.setAttribute('id', 'sepiaButton');
         sepiaButton.textContent = 'Apply Sepia';
         sepiaButton.addEventListener('click', applySepia);
-        imageControlsArea.appendChild(sepiaButton);
+        controlsContainer.appendChild(sepiaButton);
 
         // Create Invert button
         const invertButton = document.createElement('button');
         invertButton.setAttribute('id', 'invertButton');
         invertButton.textContent = 'Invert Colors';
         invertButton.addEventListener('click', applyInvert);
-        imageControlsArea.appendChild(invertButton);
+        controlsContainer.appendChild(invertButton);
 
         // Create Rotate button
         const rotateButton = document.createElement('button');
         rotateButton.setAttribute('id', 'rotateButton');
         rotateButton.textContent = 'Rotate 90° CW';
         rotateButton.addEventListener('click', rotateImage90CW);
-        imageControlsArea.appendChild(rotateButton);
+        controlsContainer.appendChild(rotateButton);
 
         // Create Flip Horizontal button
         const flipHorizontalButton = document.createElement('button');
         flipHorizontalButton.setAttribute('id', 'flipHorizontalButton');
         flipHorizontalButton.textContent = 'Flip Horizontal';
         flipHorizontalButton.addEventListener('click', flipImageHorizontal);
-        imageControlsArea.appendChild(flipHorizontalButton);
+        controlsContainer.appendChild(flipHorizontalButton);
 
         // Create Flip Vertical button
         const flipVerticalButton = document.createElement('button');
         flipVerticalButton.setAttribute('id', 'flipVerticalButton');
         flipVerticalButton.textContent = 'Flip Vertical';
         flipVerticalButton.addEventListener('click', flipImageVertical);
-        imageControlsArea.appendChild(flipVerticalButton);
+        controlsContainer.appendChild(flipVerticalButton);
 
+        // Create Download button
+        const downloadButton = document.createElement('button');
+        downloadButton.setAttribute('id', 'downloadButton');
+        downloadButton.textContent = 'Download Image';
+        downloadButton.addEventListener('click', downloadImage);
+        controlsContainer.appendChild(downloadButton);
+
+        imageControlsArea.appendChild(controlsContainer);
     } else {
         console.error('Image controls area not found.');
     }
@@ -349,5 +360,38 @@ document.addEventListener('DOMContentLoaded', () => {
             originalImage.src = dataURL;
         };
         imgToFlip.src = originalImage.src; // Use current originalImage state
+    }
+
+    function downloadImage() {
+        if (!originalImage) {
+            alert('Please upload an image first. There is nothing to download.');
+            return;
+        }
+        console.log('Preparing image for download...');
+
+        // Get the canvas element
+        const canvasToDownload = document.getElementById('imageCanvas');
+        if (!canvasToDownload) {
+            console.error('Canvas element not found for download!');
+            alert('Error: Canvas not found.');
+            return;
+        }
+
+        // Create a temporary link element
+        const link = document.createElement('a');
+        
+        // Set filename (user can change it in the download dialog)
+        link.download = 'processed-image.png'; 
+        
+        // Convert canvas content to data URL (PNG format by default)
+        // For JPG, use 'image/jpeg'. For quality, use a second param: canvas.toDataURL('image/jpeg', 0.9);
+        link.href = canvasToDownload.toDataURL('image/png'); 
+        
+        // Append link to the body, click it, then remove it
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        console.log('Download initiated.');
     }
 });

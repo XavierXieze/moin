@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide: Using Image Filters - Image Processing Tool</title>
+    <link rel="stylesheet" href="../style.css"> <!-- Note: path to style.css is ../ -->
+    <style>
+        /* Reusing content-section styles from about/privacy for consistency */
+        .content-section {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .content-section h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .content-section h3 {
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .content-section p, .content-section ul {
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        .breadcrumb {
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        .breadcrumb a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="../index.html" style="color: inherit; text-decoration: none;">Image Processing Tool</a></h1>
+    </header>
+
+    <main style="display: block; max-width: 900px;">
+        <section class="content-section">
+            <p class="breadcrumb"><a href="how-to-index.html">&laquo; Back to How-to Guides</a></p>
+            <h2>Understanding and Using Image Filters</h2>
+            <p><em>Published: [Date]</em></p>
+            
+            <p>Our Image Processing Tool offers several basic filters to quickly change the look and feel of your images. This guide will walk you through how to use them.</p>
+
+            <h3>Accessing Filters</h3>
+            <p>After uploading your image, you'll see a "Controls" section. Within this section, you'll find buttons for each available filter:</p>
+            <ul>
+                <li><strong>Apply Grayscale:</strong> Converts your image to shades of gray.</li>
+                <li><strong>Apply Sepia:</strong> Gives your image an old-fashioned, warm brown tone.</li>
+                <li><strong>Invert Colors:</strong> Inverts all colors in your image, creating a negative-like effect.</li>
+            </ul>
+
+            <h3>How to Apply a Filter</h3>
+            <p>Simply click the button for the filter you wish to apply. The processed image will appear on the canvas. You can apply different filters one after another, but note that each filter (in the current version) is applied to the original uploaded image, not cumulatively to the previously filtered version unless it's a transformation like rotate/flip.</p>
+            
+            <h3>Example: Applying Grayscale</h3>
+            <ol>
+                <li>Upload your image using the "Upload Your Image" section.</li>
+                <li>Once the image appears on the canvas, find the "Controls" section.</li>
+                <li>Click the "Apply Grayscale" button.</li>
+                <li>Your image will now be displayed in grayscale. You can then download it or try other operations.</li>
+            </ol>
+
+            <p>Experiment with different filters to achieve the desired effect for your images!</p>
+        </section>
+    </main>
+
+    <footer style="position: static;"> <!-- Ensure footer is at the bottom -->
+        <p>&copy; 2023 Image Processing Tool. 
+            <a href="../about.html">About Us</a> | 
+            <a href="../privacy.html">Privacy Policy</a> |
+            <a href="how-to-index.html">How To</a>
+        </p>
+    </footer>
+</body>
+</html>

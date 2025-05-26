@@ -1,71 +1,166 @@
 /* style.css */
 body {
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #f0f2f5; /* Lighter grey background */
+    color: #1c1e21; /* Darker text color for better contrast */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
+    background-color: #ffffff; /* White header */
+    color: #1c1e21;
+    padding: 1.5rem 1rem; /* Increased padding */
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow */
+    border-bottom: 1px solid #ddd;
 }
 
 header h1 {
     margin: 0;
+    font-size: 1.75rem; /* Slightly larger title */
 }
 
 main {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: 20px auto;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    flex: 1; /* Allows main to grow and push footer down */
+    padding: 1.5rem;
+    max-width: 1400px; /* Wider max-width for larger screens */
+    width: 90%; /* Responsive width */
+    margin: 30px auto; /* Increased top/bottom margin */
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Softer, larger shadow */
+    border-radius: 8px; /* Rounded corners */
+    display: flex; /* Use flexbox for main content layout */
+    gap: 20px; /* Gap between sections */
+    flex-wrap: wrap; /* Allow sections to wrap on smaller screens */
 }
 
 section {
     margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 25px; /* Increased padding */
+    border: none; /* Remove border, rely on shadow from main */
+    border-radius: 6px; /* Rounded corners for sections */
+    background-color: #fff; /* Ensure sections are white if main gets a different bg */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* Subtle shadow for sections themselves */
+}
+
+/* Specific layout for sections within main */
+#image-upload-area, #image-controls-area {
+    flex-basis: 320px; /* Minimum width for upload and controls, adjusted */
+    flex-grow: 1;      /* Allow them to grow */
+    min-width: 300px; /* Ensure they don't get too small */
+}
+
+#image-display-area {
+    flex-basis: 600px; /* More space for image display */
+    flex-grow: 2;      /* Allow it to grow more */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center canvas if it's smaller than area */
+    min-width: 300px; /* Ensure it doesn't get too small */
 }
 
 section h2 {
     margin-top: 0;
+    margin-bottom: 1rem; /* Space below heading */
     color: #333;
+    font-size: 1.3rem; /* Slightly adjusted heading size */
+    border-bottom: 1px solid #eee; /* Separator for heading */
+    padding-bottom: 0.5rem;
 }
 
 #imageCanvas {
-    border: 1px solid #ccc;
-    max-width: 100%; /* Ensure canvas is responsive */
-    height: auto;   /* Maintain aspect ratio */
-    display: block; /* Remove extra space below canvas */
+    border: 1px solid #d0d0d0; /* Slightly softer border */
+    max-width: 100%; 
+    height: auto;   
+    display: block; 
     margin-top: 10px;
+    border-radius: 4px; /* Rounded corners for canvas */
 }
 
-input[type="file"],
-button {
+#image-controls-area .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Responsive grid for controls, adjusted */
+    gap: 12px; /* Adjusted gap */
+}
+
+input[type="file"] {
     display: block;
-    margin: 10px 0;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #eee;
+    width: calc(100% - 38px); /* Adjust width to fit padding and border */
+    margin: 10px 0 20px 0; /* More bottom margin */
+    padding: 12px 18px;
+    border: 1px solid #ccd0d5;
+    border-radius: 6px;
+    background-color: #f5f6f7;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+input[type="file"]:hover {
+    background-color: #e9ebee;
+}
+
+button { /* General button styling */
+    padding: 10px 15px; /* Adjusted padding */
+    border: none; /* Remove border */
+    border-radius: 6px; /* Rounded corners */
+    background-color: #007bff; /* Primary blue */
+    color: white;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%; /* Make buttons take full width of their grid cell */
 }
 
 button:hover {
-    background-color: #ddd;
+    background-color: #0056b3; /* Darker blue on hover */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+button:active {
+    background-color: #004085; /* Even darker blue on active */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Styling for sliders and their labels */
+#image-controls-area label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #4b4f56;
+}
+
+#image-controls-area input[type="range"] {
+    width: 100%; /* Make sliders take full width of their container */
+    margin-bottom: 15px;
+    cursor: pointer;
 }
 
 footer {
     text-align: center;
-    padding: 1rem 0;
-    background-color: #333;
-    color: #fff;
-    margin-top: 20px;
+    padding: 1.5rem 1rem; /* Increased padding */
+    background-color: #ffffff; /* White footer */
+    color: #606770; /* Softer text color */
+    margin-top: auto; /* Pushes footer to bottom if content is short */
+    border-top: 1px solid #ddd;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Links in footer */
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
 }
