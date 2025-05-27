@@ -26,9 +26,9 @@
             font-size: 1.1em;
         }
         .qr-code-placeholder {
-            width: 234px;
-            height: 188px;
-            background-color: #e0e0e0;
+            width: 200px; /* Adjust size as needed */
+            height: 200px;
+            background-color: #e0e0e0; /* Placeholder background */
             border: 1px solid #ccc;
             margin: 20px auto;
             display: flex;
@@ -37,12 +37,6 @@
             font-size: 0.9em;
             color: #777;
         }
-        .qr-code-placeholder img {
-            width: 234px;
-            height: 188px;
-            image-rendering: pixelated; /* 防止模糊 */
-        }
-
         .payment-instructions {
             margin-top: 20px;
             font-weight: bold;
@@ -65,34 +59,37 @@
         <h1><a href="index.html" style="color: inherit; text-decoration: none;">Image Processing Tool</a></h1>
     </header>
 
-    <main style="display: block; max-width: 700px;">
+    <main style="display: block; max-width: 700px;"> {/* Override main flex for simpler content page */}
         <section class="content-section">
             <h2>Upgrade Your Plan</h2>
-
+            
             <div id="payment-details">
                 <p class="tier-info">You are upgrading to: <span id="selected-tier">N/A</span></p>
                 <p class="amount-info">Please pay: <span id="payment-amount">N/A</span></p>
             </div>
 
             <p>Scan the QR code below with your payment app to complete the transaction.</p>
-
+            
             <!-- Placeholder for QR Code Image -->
             <!-- User needs to replace this with their actual QR code image -->
             <div class="qr-code-placeholder" id="qr-code-container">
-                   <img src="qr-code.png" alt="QR Code for Payment">
-
+                <!-- <img src="qr-code.png" alt="QR Code for Payment"> -->
+                QR Code Placeholder
             </div>
-
+            
             <p class="payment-instructions">
-                After payment, your account will be upgraded automatically.
+                After payment, your account will be upgraded automatically. 
+                (Note: This is a placeholder. Actual account upgrade requires backend integration.)
             </p>
+            <button id="confirmPaymentButton" style="padding: 10px 20px; font-size: 1em; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">I've Paid, Update My Status</button>
+            <p id="confirmationMessage" style="color: green; font-weight: bold; margin-top: 15px;"></p>
             <p><a href="index.html">&laquo; Back to Homepage</a></p>
         </section>
     </main>
 
     <footer style="position: static;">
-        <p>&copy; 2023 Image Processing Tool.
-            <a href="about.html">About Us</a> |
+        <p>&copy; 2023 Image Processing Tool. 
+            <a href="about.html">About Us</a> | 
             <a href="privacy.html">Privacy Policy</a> |
             <a href="how-to/how-to-index.html">How To</a>
         </p>
@@ -116,20 +113,49 @@
             if (amount && paymentAmountEl) {
                 paymentAmountEl.textContent = '$' + amount + '/month';
             }
-
+            
             // Dynamically load QR code if provided, or keep placeholder
             // For example, if QR codes are named like qr-pro.png, qr-max.png:
-            //  if (tier) {
-            //     const qrImg = document.createElement('img');
-            //     qrImg.src = 'qr-' + tier.toLowerCase() + '.png'; // User needs to provide these images
-            //     qrImg.alt = 'QR Code for ' + tier + ' plan';
-            //     qrImg.style.maxWidth = '100%';
-            //     qrImg.style.maxHeight = '100%';
+            // if (tier) {
+            //    const qrImg = document.createElement('img');
+            //    qrImg.src = 'qr-' + tier.toLowerCase() + '.png'; // User needs to provide these images
+            //    qrImg.alt = 'QR Code for ' + tier + ' plan';
+            //    qrImg.style.maxWidth = '100%';
+            //    qrImg.style.maxHeight = '100%';
             //    qrCodeContainerEl.innerHTML = ''; // Clear placeholder text
-            //     qrCodeContainerEl.appendChild(qrImg);
-            //  }
+            //    qrCodeContainerEl.appendChild(qrImg);
+            // }
 
+            const confirmButton = document.getElementById('confirmPaymentButton');
+            const confirmationMessageEl = document.getElementById('confirmationMessage');
 
+            if (confirmButton) {
+                confirmButton.addEventListener('click', () => {
+                    const params = new URLSearchParams(window.location.search); // Re-get params just in case, or use stored 'tier'
+                    const targetTier = params.get('tier');
+
+                    if (targetTier) {
+                        localStorage.setItem('userMembershipTier', targetTier);
+                        console.log(`Membership status updated in localStorage to: ${targetTier}`);
+                        
+                        if (confirmationMessageEl) {
+                            confirmationMessageEl.textContent = `Your membership status has been updated to ${targetTier}! Please return to the homepage to enjoy your new features.`;
+                        }
+                        alert(`Your membership status has been updated to ${targetTier}!`); // Also alert for immediate feedback
+
+                        // Optionally, disable the button after click
+                        confirmButton.disabled = true;
+                        confirmButton.textContent = 'Status Updated';
+                        confirmButton.style.backgroundColor = '#6c757d'; // Grey out
+                    } else {
+                        if (confirmationMessageEl) {
+                            confirmationMessageEl.textContent = 'Error: Could not determine tier to update.';
+                            confirmationMessageEl.style.color = 'red';
+                        }
+                        alert('Error: Could not determine tier to update.');
+                    }
+                });
+            }
         });
     </script>
 </body>

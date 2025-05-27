@@ -17,6 +17,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     let originalImage = null;
     let initialUploadedImageDataUrl = null; // Variable to store the initial data URL
+    let currentUserTier; // Variable to store current membership tier
+
+    // Function to load membership status from localStorage
+    function loadMembershipStatus() {
+        const storedTier = localStorage.getItem('userMembershipTier');
+        if (!storedTier) {
+            currentUserTier = "Free";
+            localStorage.setItem('userMembershipTier', currentUserTier);
+            console.log('No membership status found in localStorage. Defaulting to Free.');
+        } else {
+            currentUserTier = storedTier;
+            console.log(`Membership status loaded from localStorage: ${currentUserTier}`);
+        }
+
+        // Update the visual display for membership status
+        const userTierTextEl = document.getElementById('userTierText');
+        if (userTierTextEl) {
+            userTierTextEl.textContent = currentUserTier;
+        }
+    }
+
+    // Function to update membership status
+    function updateMembershipStatus(newTier) {
+        currentUserTier = newTier;
+        localStorage.setItem('userMembershipTier', currentUserTier);
+        console.log(`Membership status updated to: ${currentUserTier}`);
+        
+        // Update the visual display
+        const userTierTextEl = document.getElementById('userTierText');
+        if (userTierTextEl) {
+            userTierTextEl.textContent = currentUserTier;
+        }
+        // Optional: dispatch an event to notify other parts of the UI
+        // window.dispatchEvent(new CustomEvent('membershipChanged', { detail: { newTier: currentUserTier } }));
+    }
+
+    // Initialize the user's tier status on page load
+    loadMembershipStatus();
 
     imageUploadInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -249,8 +287,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Tier Access Logic (Placeholder) ---
         // In a real application, you'd check the actual user's subscription level.
-        // For now, we simulate this check.
-        const currentUserTier = "Free"; // Simulate current user tier. This would come from backend/auth.
+        // For now, we use the global currentUserTier which is loaded from localStorage.
+        // const currentUserTier = "Free"; // Simulate current user tier. This would come from backend/auth. // This line is now replaced by the global
 
         if (isPremium) {
             let canAccess = false;
