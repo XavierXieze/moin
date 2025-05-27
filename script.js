@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('imageCanvas');
     const ctx = canvas.getContext('2d');
     let originalImage = null;
+    let initialUploadedImageDataUrl = null; // Variable to store the initial data URL
 
     imageUploadInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
@@ -31,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Image loaded and drawn to canvas.');
                 };
                 originalImage.src = e.target.result;
+                initialUploadedImageDataUrl = e.target.result; // Store the initial data URL
+                console.log('Initial image data URL stored.'); 
             };
             reader.readAsDataURL(file);
         }
@@ -304,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         // Use the current canvas content as the source for upscaling,
         // as other filters/transformations might have been applied.
-        tempImage.src = currentCanvas.toDataURL();
+        // tempImage.src = currentCanvas.toDataURL(); // OLD LINE
+        tempImage.src = initialUploadedImageDataUrl; // USE THE STORED INITIAL IMAGE DATA
     }
 
     function applyInvert() {

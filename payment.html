@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Payment - Image Processing Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reusing content-section styles from about/privacy for consistency */
+        .content-section {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center; /* Center content for this page */
+        }
+        .content-section h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .content-section p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .qr-code-placeholder {
+            width: 200px; /* Adjust size as needed */
+            height: 200px;
+            background-color: #e0e0e0; /* Placeholder background */
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .payment-instructions {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .tier-info {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .amount-info {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><a href="index.html" style="color: inherit; text-decoration: none;">Image Processing Tool</a></h1>
+    </header>
+
+    <main style="display: block; max-width: 700px;"> {/* Override main flex for simpler content page */}
+        <section class="content-section">
+            <h2>Upgrade Your Plan</h2>
+            
+            <div id="payment-details">
+                <p class="tier-info">You are upgrading to: <span id="selected-tier">N/A</span></p>
+                <p class="amount-info">Please pay: <span id="payment-amount">N/A</span></p>
+            </div>
+
+            <p>Scan the QR code below with your payment app to complete the transaction.</p>
+            
+            <!-- Placeholder for QR Code Image -->
+            <!-- User needs to replace this with their actual QR code image -->
+            <div class="qr-code-placeholder" id="qr-code-container">
+                <!-- <img src="qr-code.png" alt="QR Code for Payment"> -->
+                QR Code Placeholder
+            </div>
+            
+            <p class="payment-instructions">
+                After payment, your account will be upgraded automatically. 
+                (Note: This is a placeholder. Actual account upgrade requires backend integration.)
+            </p>
+            <p><a href="index.html">&laquo; Back to Homepage</a></p>
+        </section>
+    </main>
+
+    <footer style="position: static;">
+        <p>&copy; 2023 Image Processing Tool. 
+            <a href="about.html">About Us</a> | 
+            <a href="privacy.html">Privacy Policy</a> |
+            <a href="how-to/how-to-index.html">How To</a>
+        </p>
+    </footer>
+
+    <script>
+        // Small script to read URL parameters and display tier info
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const tier = params.get('tier');
+            const amount = params.get('amount');
+
+            const selectedTierEl = document.getElementById('selected-tier');
+            const paymentAmountEl = document.getElementById('payment-amount');
+            const qrCodeContainerEl = document.getElementById('qr-code-container');
+
+
+            if (tier && selectedTierEl) {
+                selectedTierEl.textContent = tier.charAt(0).toUpperCase() + tier.slice(1); // Capitalize first letter
+            }
+            if (amount && paymentAmountEl) {
+                paymentAmountEl.textContent = '$' + amount + '/month';
+            }
+            
+            // Dynamically load QR code if provided, or keep placeholder
+            // For example, if QR codes are named like qr-pro.png, qr-max.png:
+            // if (tier) {
+            //    const qrImg = document.createElement('img');
+            //    qrImg.src = 'qr-' + tier.toLowerCase() + '.png'; // User needs to provide these images
+            //    qrImg.alt = 'QR Code for ' + tier + ' plan';
+            //    qrImg.style.maxWidth = '100%';
+            //    qrImg.style.maxHeight = '100%';
+            //    qrCodeContainerEl.innerHTML = ''; // Clear placeholder text
+            //    qrCodeContainerEl.appendChild(qrImg);
+            // }
+
+
+        });
+    </script>
+</body>
+</html>
