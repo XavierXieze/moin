@@ -179,6 +179,55 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadButton.addEventListener('click', downloadImage);
         controlsContainer.appendChild(downloadButton);
 
+        // Create a heading for the upscale section (optional, but good for grouping)
+        const upscaleHeading = document.createElement('h4'); // Or h3, adjust as per design
+        upscaleHeading.textContent = 'Image Upscaling';
+        upscaleHeading.style.gridColumn = '1 / -1'; // Make heading span all columns in the grid
+        upscaleHeading.style.textAlign = 'center';
+        upscaleHeading.style.marginTop = '20px';
+        controlsContainer.appendChild(upscaleHeading);
+
+        const upscaleFactors = [
+            { factor: 2, label: '2x', premium: false },
+            { factor: 4, label: '4x', premium: false },
+            { factor: 6, label: '6x (Pro)', premium: true, requiredTier: 'Pro' }, // Tentative
+            { factor: 8, label: '8x (Pro)', premium: true, requiredTier: 'Pro' },
+            { factor: 16, label: '16x (Max)', premium: true, requiredTier: 'Max' }
+        ];
+
+        upscaleFactors.forEach(item => {
+            const upscaleButton = document.createElement('button');
+            upscaleButton.textContent = item.label;
+            upscaleButton.setAttribute('data-factor', item.factor);
+            if (item.premium) {
+                upscaleButton.setAttribute('data-premium', 'true');
+                upscaleButton.setAttribute('data-tier', item.requiredTier);
+                // Optionally add a class for styling premium buttons differently
+                upscaleButton.classList.add('premium-feature'); 
+            }
+            upscaleButton.addEventListener('click', (event) => {
+                const buttonElement = event.currentTarget; // Use currentTarget for reliability
+                const factor = parseInt(buttonElement.getAttribute('data-factor'));
+                const isPremium = buttonElement.getAttribute('data-premium') === 'true';
+                const requiredTier = buttonElement.getAttribute('data-tier');
+                applyUpscale(factor, isPremium, requiredTier); 
+            });
+            controlsContainer.appendChild(upscaleButton);
+        });
+
+        // This code should be placed after the upscaleFactors.forEach loop
+    
+        const upscaleDescription = document.createElement('p');
+        upscaleDescription.innerHTML = '<strong>AI-Powered Upscaling:</strong> Our advanced upscaling technology utilizes AI to intelligently enhance image details, allowing for significantly larger images while maintaining remarkable clarity and sharpness, especially with our Pro and Max tier options. Basic upscaling for lower magnifications uses standard interpolation methods.';
+        upscaleDescription.style.gridColumn = '1 / -1'; // Make description span all columns
+        upscaleDescription.style.textAlign = 'center';
+        upscaleDescription.style.fontSize = '0.85em';
+        upscaleDescription.style.color = '#555';
+        upscaleDescription.style.marginTop = '10px'; // Space above the description
+        upscaleDescription.style.marginBottom = '15px'; // Space below the description
+        
+        controlsContainer.appendChild(upscaleDescription);
+
         imageControlsArea.appendChild(controlsContainer);
     } else {
         console.error('Image controls area not found.');
@@ -186,6 +235,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // You can add more stubs for other functions like:
     // applySepia, applyInvert, rotateImage, flipImage, cropImage etc.
+
+    function applyUpscale(factor, isPremium, requiredTier) {
+        if (!originalImage) {
+            alert('Please upload an image first.');
+            return;
+        }
+
+        console.log(`Attempting to upscale by ${factor}x. Premium: ${isPremium}, Required Tier: ${requiredTier}`);
+
+        // --- Tier Access Logic (Placeholder) ---
+        // In a real application, you'd check the actual user's subscription level.
+        // For now, we simulate this check.
+        const currentUserTier = "Free"; // Simulate current user tier. This would come from backend/auth.
+
+        if (isPremium) {
+            let canAccess = false;
+            if (requiredTier === "Pro" && (currentUserTier === "Pro" || currentUserTier === "Max")) {
+                canAccess = true;
+            } else if (requiredTier === "Max" && currentUserTier === "Max") {
+                canAccess = true;
+            }
+
+            if (!canAccess) {
+                alert(`The ${factor}x upscale option requires a ${requiredTier} membership. Please upgrade your plan.`);
+                return;
+            }
+        }
+        
+        // --- Actual Upscaling Logic ---
+        // For "Free" tiers (2x, 4x based on current assumption) or if a premium user has access:
+        // Use basic canvas upscaling. This is NOT AI-enhanced.
+        // For premium tiers that are accessed, this basic method will also be used as a placeholder.
+        // True AI upscaling would require backend processing.
+
+        console.log(`Proceeding with basic canvas upscale for ${factor}x.`);
+
+        const currentCanvas = document.getElementById('imageCanvas');
+        const tempImage = new Image();
+        tempImage.onload = () => {
+            const newWidth = tempImage.width * factor;
+            const newHeight = tempImage.height * factor;
+
+            // Optional: Add a check for maximum canvas dimensions to prevent browser crashes
+            // For example: if (newWidth > 8000 || newHeight > 8000) { alert('Upscaled image too large.'); return; }
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // The drawImage with more arguments can control smoothing.
+            // Default browser behavior usually includes some form of interpolation (e.g., bicubic).
+            // For sharper, pixelated upscale (less common for photos):
+            // ctx.imageSmoothingEnabled = false; 
+            // For smoother (default):
+            ctx.imageSmoothingEnabled = true; 
+            ctx.drawImage(tempImage, 0, 0, newWidth, newHeight);
+            
+            console.log(`Image upscaled to ${newWidth}x${newHeight} on canvas.`);
+
+            // Update originalImage to this new upscaled version for consistency with other ops
+            const dataURL = canvas.toDataURL();
+            originalImage = new Image(); // Create a new Image object
+            originalImage.onload = () => {
+                console.log('Upscaled image loaded into originalImage object for subsequent operations.');
+            };
+            originalImage.src = dataURL;
+        };
+        // Use the current canvas content as the source for upscaling,
+        // as other filters/transformations might have been applied.
+        tempImage.src = currentCanvas.toDataURL();
+    }
 
     function applyInvert() {
         if (!originalImage) {

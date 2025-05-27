@@ -358,3 +358,61 @@ header {
         margin-bottom: 20px; /* Add margin when stacked */
     }
 }
+
+/* Styling for Upscaling Controls */
+
+/* Heading for Upscale Section (if h4 was used as in script.js) */
+#image-controls-area .controls-grid h4 {
+    grid-column: 1 / -1; /* Ensure it spans all columns */
+    text-align: center;
+    margin-top: 20px; /* Space above the heading */
+    margin-bottom: 10px; /* Space below the heading */
+    font-size: 1.1rem; /* Adjust size as needed */
+    color: #333;
+    font-weight: 600; /* Make it a bit bolder */
+    border-bottom: 1px solid #eee; /* Optional separator */
+    padding-bottom: 5px; /* Padding for separator */
+}
+
+/* Styling for Upscale Buttons */
+/* General upscale button style can leverage existing button styles if they are suitable */
+/* We might want some specific margin or width adjustments if needed */
+
+/* Styling for Premium/Locked Upscale Buttons */
+#image-controls-area .controls-grid button.premium-feature {
+    background-color: #6c757d; /* A muted color for premium, e.g., grey */
+    color: white;
+    position: relative; /* For pseudo-elements like a lock icon if added via CSS */
+}
+
+#image-controls-area .controls-grid button.premium-feature:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+}
+
+/* Example: Adding a lock icon using ::after pseudo-element 
+   This assumes the button text already indicates (Pro) or (Max)
+   If not, the lock icon becomes more important.
+*/
+#image-controls-area .controls-grid button.premium-feature::after {
+    content: '\1F512'; /* Unicode lock character 🔒 */
+    font-size: 0.8em; /* Adjust size of lock icon */
+    margin-left: 8px; /* Space between text and lock */
+    display: inline-block;
+}
+
+/* Styling for the Upscale AI Description Paragraph */
+/* The script already adds inline styles:
+    gridColumn = '1 / -1';
+    textAlign = 'center';
+    fontSize = '0.85em';
+    color = '#555';
+    marginTop = '10px';
+    marginBottom = '15px';
+   These can be moved to CSS if preferred, or supplemented.
+   For example, adding a border or background:
+*/
+#image-controls-area .controls-grid p { /* This will target the description paragraph if it's the only <p> directly in controls-grid after buttons */
+    /* If more <p> elements are added, a specific class/id for the description would be better */
+    /* For now, assuming it's specific enough or inline styles are sufficient. */
+    /* Example: border-top: 1px solid #eee; padding-top: 10px; */
+}
