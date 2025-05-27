@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userTierTextEl) {
             userTierTextEl.textContent = currentUserTier;
         }
+        updatePremiumButtonStyles(); // Call to update button styles
     }
 
     // Function to update membership status
@@ -269,6 +270,49 @@ document.addEventListener('DOMContentLoaded', () => {
         
         controlsContainer.appendChild(upscaleDescription);
 
+        // Create a heading for the Downscale section
+        const downscaleHeading = document.createElement('h4');
+        downscaleHeading.textContent = 'Image Downscaling';
+        downscaleHeading.style.gridColumn = '1 / -1'; // Make heading span all columns
+        downscaleHeading.style.textAlign = 'center';
+        downscaleHeading.style.marginTop = '20px';
+        controlsContainer.appendChild(downscaleHeading);
+
+        const downscaleFactors = [
+            { factor: 2, label: '2x', premium: false },
+            { factor: 4, label: '4x', premium: false },
+            { factor: 6, label: '6x (Pro)', premium: true, requiredTier: 'Pro' },
+            { factor: 8, label: '8x (Pro)', premium: true, requiredTier: 'Pro' },
+            { factor: 16, label: '16x (Max)', premium: true, requiredTier: 'Max' }
+        ];
+
+        downscaleFactors.forEach(item => {
+            const downscaleButton = document.createElement('button');
+            downscaleButton.textContent = item.label;
+            downscaleButton.setAttribute('data-factor', item.factor);
+            if (item.premium) {
+                downscaleButton.setAttribute('data-premium', 'true');
+                downscaleButton.setAttribute('data-tier', item.requiredTier);
+                downscaleButton.classList.add('premium-feature'); // Default to locked style
+            }
+            downscaleButton.addEventListener('click', (event) => {
+                const buttonElement = event.currentTarget;
+                const factor = parseInt(buttonElement.getAttribute('data-factor'));
+                const isPremium = buttonElement.getAttribute('data-premium') === 'true';
+                const requiredTier = buttonElement.getAttribute('data-tier');
+                
+                // applyDownscale(factor, isPremium, requiredTier); // Placeholder for now
+                // console.log(`Downscale ${factor}x clicked. Premium: ${isPremium}, Tier: ${requiredTier || 'Free'}`);
+                // The actual applyDownscale function will be implemented in the next step
+                applyDownscale(factor, isPremium, requiredTier); // Call the actual function
+            });
+            controlsContainer.appendChild(downscaleButton);
+        });
+        
+        updatePremiumButtonStyles(); // Explicitly call to style newly added downscale buttons
+        // Note: updatePremiumButtonStyles() will also be called by loadMembershipStatus()
+        // and updateMembershipStatus(), which should cover these new buttons as well if tier changes later.
+
         imageControlsArea.appendChild(controlsContainer);
     } else {
         console.error('Image controls area not found.');
@@ -276,6 +320,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // You can add more stubs for other functions like:
     // applySepia, applyInvert, rotateImage, flipImage, cropImage etc.
+
+    function applyDownscale(factor, isPremium, requiredTier) {
+        if (!initialUploadedImageDataUrl) { // Check if an initial image was ever loaded
+            alert('Please upload an image first.');
+            return;
+        }
+
+        console.log(`Attempting to downscale by ${factor}x. Premium: ${isPremium}, Required Tier: ${requiredTier}`);
+
+        // --- Tier Access Logic ---
+        // Uses the global currentUserTier which is loaded from localStorage
+        if (isPremium) {
+            let canAccess = false;
+            if (requiredTier === "Pro" && (currentUserTier === "Pro" || currentUserTier === "Max")) {
+                canAccess = true;
+            } else if (requiredTier === "Max" && currentUserTier === "Max") {
+                canAccess = true;
+            }
+
+            if (!canAccess) {
+                alert(`The ${factor}x downscale option requires a ${requiredTier} membership. Please upgrade your plan.`);
+                return;
+            }
+        }
+        
+        // --- Actual Downscaling Logic ---
+        console.log(`Proceeding with canvas downscale for ${factor}x.`);
+
+        const tempImage = new Image();
+        tempImage.onload = () => {
+            // Calculate new dimensions based on the original uploaded image's dimensions
+            const newWidth = Math.round(tempImage.width / factor);
+            const newHeight = Math.round(tempImage.height / factor);
+
+            if (newWidth < 1 || newHeight < 1) {
+                alert('Downscaled image would be too small (less than 1 pixel). Operation cancelled.');
+                return;
+            }
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Image smoothing is generally good for downscaling
+            ctx.imageSmoothingEnabled = true; 
+            ctx.imageSmoothingQuality = 'high'; // Prefer quality for downscaling
+            ctx.drawImage(tempImage, 0, 0, newWidth, newHeight);
+            
+            console.log(`Image downscaled to ${newWidth}x${newHeight} on canvas.`);
+
+            // Update originalImage to this new downscaled version
+            // This makes the downscale persistent for subsequent non-scaling operations
+            const dataURL = canvas.toDataURL();
+            originalImage = new Image(); 
+            originalImage.onload = () => {
+                console.log('Downscaled image loaded into originalImage object for subsequent operations.');
+            };
+            originalImage.src = dataURL;
+        };
+        // Always use the initial uploaded image data as the source for downscaling
+        tempImage.src = initialUploadedImageDataUrl; 
+    }
 
     function applyUpscale(factor, isPremium, requiredTier) {
         if (!originalImage) {

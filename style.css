@@ -416,3 +416,56 @@ header {
     /* For now, assuming it's specific enough or inline styles are sufficient. */
     /* Example: border-top: 1px solid #eee; padding-top: 10px; */
 }
+
+/* Styling for Upscale/Downscale Buttons based on Tier Access */
+
+/* Locked Premium Feature: .premium-feature (already partially styled) */
+#image-controls-area .controls-grid button.premium-feature {
+    background-color: #6c757d; /* Muted color for locked premium */
+    color: white;
+    position: relative;
+    opacity: 0.7; /* Slightly faded */
+    cursor: not-allowed; /* Indicate it's not clickable (if not disabled) */
+}
+
+#image-controls-area .controls-grid button.premium-feature:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+}
+
+/* Ensure lock icon only appears for the .premium-feature (locked) state */
+#image-controls-area .controls-grid button.premium-feature::after {
+    content: '\1F512'; /* Unicode lock character 🔒 */
+    font-size: 0.8em;
+    margin-left: 8px;
+    display: inline-block;
+}
+
+/* Unlocked Premium Feature: .premium-unlocked */
+/* This should make it look like a default action button */
+#image-controls-area .controls-grid button.premium-unlocked {
+    background-color: #007bff; /* Primary blue, same as other active buttons */
+    color: white;
+    opacity: 1;
+    cursor: pointer;
+}
+
+#image-controls-area .controls-grid button.premium-unlocked:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Remove lock icon if it was somehow applied to unlocked state (it shouldn't be if selectors are correct) */
+#image-controls-area .controls-grid button.premium-unlocked::after {
+    content: ''; /* No lock icon for unlocked buttons */
+    display: none;
+}
+
+/*
+Styling for Downscaling Controls:
+- The "Image Downscaling" h4 heading inherits styles from the general 
+  `#image-controls-area .controls-grid h4` rule.
+- Downscale buttons (including .premium-feature and .premium-unlocked states) 
+  inherit styles from the general button styling and the specific
+  `.premium-feature` / `.premium-unlocked` rules defined for upscale buttons.
+- No unique styles are applied specifically to downscale elements to maintain
+  consistency with the upscale section.
+*/
