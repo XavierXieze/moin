@@ -164,3 +164,197 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+/* Styling for Supplementary Content Sections on Homepage */
+
+.supplementary-content-wrapper {
+    padding: 20px 0; /* Add some padding above and below these sections */
+    background-color: #f0f2f5; /* Match body background or make it slightly different if desired */
+}
+
+.homepage-section {
+    max-width: 1200px; /* Max width for content within these sections */
+    margin: 30px auto; /* Centering and spacing between sections */
+    padding: 30px 20px;
+    background-color: #ffffff; /* White background for these content boxes */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Consistent shadow */
+    border-radius: 8px;
+}
+
+.homepage-section h2 { /* Main heading for these sections */
+    font-size: 2rem;
+    color: #1c1e21; /* Dark primary text color */
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.homepage-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #4b4f56; /* Softer text color */
+    text-align: center; /* Center introductory paragraphs */
+    margin-bottom: 20px;
+}
+
+/* Product Introduction Specifics */
+#product-introduction h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-align: left; /* Align subheadings to left for list items */
+}
+
+#product-introduction ul {
+    list-style-type: disc; /* Standard disc for bullet points */
+    margin-left: 20px; /* Indent list */
+    padding-left: 10px;
+    text-align: left; /* Align list items to left */
+}
+
+#product-introduction ul li {
+    font-size: 1rem;
+    color: #4b4f56;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Pricing Tiers Specifics */
+#pricing-tiers .container > p { /* The intro paragraph for pricing */
+    margin-bottom: 40px; /* More space before the grid */
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 30px; /* Space between pricing cards */
+    align-items: stretch; /* Make cards of same height if content differs */
+}
+
+.pricing-plan {
+    background-color: #f9f9f9; /* Light background for individual plan cards */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Align content vertically */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-plan:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.pricing-plan h3 { /* Plan name (Free, Pro, Max) */
+    font-size: 1.6rem;
+    color: #007bff; /* Blue accent for plan names */
+    margin-bottom: 15px;
+}
+
+.pricing-plan.pro-plan h3 { /* Highlight Pro plan, for example */
+    color: #28a745; /* Green for Pro plan name */
+}
+.pricing-plan.pro-plan {
+    border-color: #28a745; /* Green border for Pro plan */
+    box-shadow: 0 0 15px rgba(40, 167, 69, 0.2); /* Subtle glow for pro plan */
+}
+
+
+.pricing-plan .price {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.pricing-plan .price span {
+    font-size: 2.5rem; /* Larger font for price number */
+    font-weight: bold;
+    color: #1c1e21;
+}
+
+.pricing-plan ul {
+    list-style-type: none; /* Remove default bullets */
+    padding: 0;
+    margin-bottom: 25px; /* Space before button */
+    text-align: left; /* Align features to the left */
+    flex-grow: 1; /* Allows list to grow and push button down */
+}
+
+.pricing-plan ul li {
+    font-size: 0.95rem;
+    color: #4b4f56;
+    margin-bottom: 10px;
+    padding-left: 25px; /* Space for custom bullet/icon */
+    position: relative;
+}
+
+/* Custom bullet for feature list - example with checkmark */
+.pricing-plan ul li::before {
+    content: '\2713'; /* Unicode checkmark character */
+    color: #28a745; /* Green checkmark */
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.pricing-plan .cta-button { /* Call to action buttons in pricing */
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none; /* If it's an <a> styled as button */
+    font-size: 1rem;
+    font-weight: 500;
+    display: inline-block; /* Or block if it should take full width of its container */
+    width: auto; /* Override general button full width if needed */
+    margin-top: auto; /* Pushes button to bottom of flex container */
+    transition: background-color 0.2s ease;
+}
+
+.pricing-plan .cta-button:hover {
+    background-color: #0056b3;
+}
+
+.pricing-plan.pro-plan .cta-button {
+    background-color: #28a745; /* Green button for Pro plan */
+}
+.pricing-plan.pro-plan .cta-button:hover {
+    background-color: #1e7e34; /* Darker green */
+}
+
+
+/* General color enhancements - Example: adding a subtle gradient to header or a different body bg */
+/* This part is illustrative; specific color choices can be refined. */
+
+body {
+    /* Consider a very subtle gradient or a slightly more engaging background color if appropriate */
+    /* background-image: linear-gradient(to bottom, #e9eff5, #f0f2f5); */ /* Example subtle gradient */
+}
+
+header {
+    /* Could add a top border accent */
+    /* border-top: 3px solid #007bff; */
+}
+
+/* Add more colorful accents to links or specific elements if desired */
+/* a { color: #007bff; } */ /* Already somewhat in place */
+
+/* Ensure responsiveness for new sections */
+@media (max-width: 768px) {
+    .homepage-section h2 {
+        font-size: 1.8rem;
+    }
+    #product-introduction h3 {
+        font-size: 1.3rem;
+    }
+    .pricing-grid {
+        grid-template-columns: 1fr; /* Stack plans on smaller screens */
+    }
+    .pricing-plan {
+        margin-bottom: 20px; /* Add margin when stacked */
+    }
+}
